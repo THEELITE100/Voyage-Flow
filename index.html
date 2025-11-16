@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoyageFlow - Your Journey Begins</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Page 1: Registration */
+        #page1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .registration-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            transform: translateY(20px);
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .registration-container h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .registration-container p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .modal-content p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Page 2: Travel Blog */
+        #page2 {
+            background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+            position: relative;
+        }
+
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .floating-plan-btn {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            width: 180px;
+            height: 60px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulseGlow 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(17, 153, 142, 0.7);
+            }
+        }
+
+        .floating-plan-btn.shrink {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            font-size: 30px;
+        }
+
+        .floating-plan-btn .btn-text {
+            transition: opacity 0.3s ease;
+        }
+
+        .floating-plan-btn.shrink .btn-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .floating-plan-btn .btn-icon {
+            display: none;
+            font-size: 30px;
+        }
+
+        .floating-plan-btn.shrink .btn-icon {
+            display: block;
+        }
+
+        .floating-plan-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
+        }
+
+        .blog-section {
+            min-height: 100vh;
+            padding: 100px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .blog-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .blog-content {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .blog-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-content h2 {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .blog-content p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .select-destination-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .select-destination-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(17, 153, 142, 0.6);
+        }
+
+        #paris { background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200'); }
+        #tokyo { background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200'); }
+        #rome { background-image: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200'); }
+        #bali { background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200'); }
+        #santorini { background-image: url('https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=1200'); }
+        #dubai { background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200'); }
+        #maldives { background-image: url('https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200'); }
+        #newyork { background-image: url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200'); }
+        #switzerland { background-image: url('https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=1200'); }
+
+        /* Page 3: Price Calculator */
+        #page3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .calculator-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calculator-header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .destination-info {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .destination-info h2 {
+            color: #4facfe;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .destination-info p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .price-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideInFromLeft 0.6s ease forwards;
+        }
+
+        .price-section:nth-child(even) {
+            transform: translateX(50px);
+            animation: slideInFromRight 0.6s ease forwards;
+        }
+
+        .price-section:nth-child(3) { animation-delay: 0.1s; }
+        .price-section:nth-child(4) { animation-delay: 0.2s; }
+        .price-section:nth-child(5) { animation-delay: 0.3s; }
+        .price-section:nth-child(6) { animation-delay: 0.4s; }
+
+        @keyframes slideInFromLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .price-section h3 {
+            color: #4facfe;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .price-section .section-note {
+            color: #e67e22;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .option-item.selected {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 2px solid #11998e;
+        }
+
+        .option-item input[type="radio"],
+        .option-item input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .option-details {
+            flex: 1;
+        }
+
+        .option-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .option-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .option-price {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #4facfe;
+        }
+
+        .total-display {
+            position: sticky;
+            bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 30px 0;
+        }
+
+        .total-display h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .total-amount {
+            font-size: 3em;
+            font-weight: 700;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
+        }
+
+        /* Page 4: Confirmation */
+        #page4 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .confirmation-container {
+            text-align: center;
+            background: white;
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            animation: bounceIn 1s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confirmation-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: rotateIn 1s ease;
+        }
+
+        @keyframes rotateIn {
+            from {
+                transform: rotate(-200deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(0);
+                opacity: 1;
+            }
+        }
+
+        .confirmation-container h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-container p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .restart-btn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .registration-container {
+                padding: 30px 20px;
+            }
+
+            .registration-container h1 {
+                font-size: 2em;
+            }
+
+            .nav-links {
+                flex-direction: column;
+            }
+
+            .blog-content {
+                padding: 30px 20px;
+            }
+
+            .blog-content h2 {
+                font-size: 2em;
+            }
+
+            .blog-content p {
+                font-size: 1em;
+            }
+
+            .calculator-header h1 {
+                font-size: 2em;
+            }
+
+            .price-section {
+                padding: 20px;
+            }
+
+            .option-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .option-item input[type="radio"],
+            .option-item input[type="checkbox"] {
+                margin-bottom: 10px;
+            }
+
+            .confirmation-container {
+                padding: 40px 20px;
+            }
+
+            .confirmation-container h1 {
+                font-size: 2em;
+            }
+
+            .confirmation-container p {
+                font-size: 1.1em;
+            }
+
+            .floating-plan-btn {
+                right: 20px;
+                top: 80px;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Registration -->
+    <div id="page1" class="page active">
+        <div class="registration-container">
+            <h1>✈️ VoyageFlow</h1>
+            <p>Start your journey with us</p>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="John Doe" required>
+                    <div class="error-message" id="nameError">Please enter your name</div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="john@example.com" required>
+                    <div class="error-message" id="emailError">Please enter a valid email</div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="1234567890" required>
+                    <div class="error-message" id="phoneError">Phone must be exactly 10 digits</div>
+                </div>
+                <div class="form-group">
+                    <label>PIN Code</label>
+                    <input type="text" id="pincode" placeholder="123456" required>
+                    <div class="error-message" id="pincodeError">PIN must be exactly 6 digits</div>
+                </div>
+                <button type="submit" class="submit-btn">Start Your Journey</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page 2: Travel Blog -->
+    <div id="page2" class="page">
+        <div class="nav-bar">
+            <div class="nav-links">
+                <a href="#paris" class="nav-link">Paris</a>
+                <a href="#tokyo" class="nav-link">Tokyo</a>
+                <a href="#rome" class="nav-link">Rome</a>
+                <a href="#bali" class="nav-link">Bali</a>
+                <a href="#santorini" class="nav-link">Santorini</a>
+                <a href="#dubai" class="nav-link">Dubai</a>
+                <a href="#maldives" class="nav-link">Maldives</a>
+                <a href="#newyork" class="nav-link">New York</a>
+                <a href="#switzerland" class="nav-link">Switzerland</a>
+            </div>
+        </div>
+
+        <button class="floating-plan-btn" id="floatingPlanBtn" onclick="navigateTo('page3')">
+            <span class="btn-text">Plan Trip 🎯</span>
+            <span class="btn-icon">🎯</span>
+        </button>
+
+        <section id="paris" class="blog-section">
+            <div class="blog-content">
+                <h2>🗼 Paris, France</h2>
+                <p>The City of Light beckons with its iconic Eiffel Tower, world-class museums, and charming cafés. Stroll along the Seine, explore the Louvre's treasures, and savor authentic French cuisine.</p>
+                <p>From Montmartre to Versailles, Paris offers an unforgettable blend of history, art, and romance. Perfect for couples and culture enthusiasts.</p>
+                <button class="select-destination-btn" onclick="selectDestination('paris')">Select Paris</button>
+            </div>
+        </section>
+
+        <section id="tokyo" class="blog-section">
+            <div class="blog-content">
+                <h2>🗾 Tokyo, Japan</h2>
+                <p>Experience the perfect harmony of ancient traditions and cutting-edge technology. Visit serene temples, explore bustling markets, and indulge in world-renowned sushi.</p>
+                <p>From neon-lit Shibuya to tranquil tea houses, Tokyo is a city that never ceases to amaze. Ideal for food lovers and tech enthusiasts.</p>
+                <button class="select-destination-btn" onclick="selectDestination('tokyo')">Select Tokyo</button>
+            </div>
+        </section>
+
+        <section id="rome" class="blog-section">
+            <div class="blog-content">
+                <h2>🏛️ Rome, Italy</h2>
+                <p>Walk through millennia of history in the Eternal City. Marvel at the Colosseum, toss a coin in the Trevi Fountain, and explore the Vatican's artistic masterpieces.</p>
+                <p>Enjoy authentic pasta and gelato while wandering through charming piazzas. Perfect for history buffs and food connoisseurs.</p>
+                <button class="select-destination-btn" onclick="selectDestination('rome')">Select Rome</button>
+            </div>
+        </section>
+
+        <section id="bali" class="blog-section">
+            <div class="blog-content">
+                <h2>🌴 Bali, Indonesia</h2>
+                <p>Discover paradise on the Island of Gods. Relax on pristine beaches, explore lush rice terraces, and immerse yourself in rich spiritual traditions.</p>
+                <p>From vibrant coral reefs to ancient temples, Bali offers the perfect escape for adventure seekers and wellness enthusiasts.</p>
+                <button class="select-destination-btn" onclick="selectDestination('bali')">Select Bali</button>
+            </div>
+        </section>
+
+        <section id="santorini" class="blog-section">
+            <div class="blog-content">
+                <h2>🇬🇷 Santorini, Greece</h2>
+                <p>Experience breathtaking sunsets over the Aegean Sea from iconic white-washed buildings and blue-domed churches. This volcanic island is a photographer's dream.</p>
+                <p>Savor fresh Mediterranean cuisine and relax on unique red and black sand beaches. Perfect for romantic getaways and sunset chasers.</p>
+                <button class="select-destination-btn" onclick="selectDestination('santorini')">Select Santorini</button>
+            </div>
+        </section>
+
+        <section id="dubai" class="blog-section">
+            <div class="blog-content">
+                <h2>🏙️ Dubai, UAE</h2>
+                <p>Experience luxury and innovation in this desert oasis. Visit the world's tallest building, shop in ultra-modern malls, and explore traditional souks.</p>
+                <p>From indoor skiing to desert safaris, Dubai offers a unique blend of tradition and futurism. Ideal for luxury travelers and adventure seekers.</p>
+                <button class="select-destination-btn" onclick="selectDestination('dubai')">Select Dubai</button>
+            </div>
+        </section>
+
+        <section id="maldives" class="blog-section">
+            <div class="blog-content">
+                <h2>🏝️ Maldives</h2>
+                <p>Escape to paradise with crystal-clear turquoise waters, pristine white sand beaches, and world-class diving spots. Stay in luxurious overwater bungalows.</p>
+                <p>Perfect for honeymooners, divers, and anyone seeking the ultimate tropical retreat. Experience unmatched tranquility and marine life.</p>
+                <button class="select-destination-btn" onclick="selectDestination('maldives')">Select Maldives</button>
+            </div>
+        </section>
+
+        <section id="newyork" class="blog-section">
+            <div class="blog-content">
+                <h2>🗽 New York, USA</h2>
+                <p>The city that never sleeps! Experience Times Square, Central Park, the Statue of Liberty, and world-class museums. Broadway shows and diverse cuisine await.</p>
+                <p>From Wall Street to Brooklyn Bridge, NYC is perfect for culture lovers, shopaholics, and urban explorers seeking the ultimate metropolitan experience.</p>
+                <button class="select-destination-btn" onclick="selectDestination('newyork')">Select New York</button>
+            </div>
+        </section>
+
+        <section id="switzerland" class="blog-section">
+            <div class="blog-content">
+                <h2>🏔️ Switzerland</h2>
+                <p>Discover the Swiss Alps with breathtaking mountain scenery, pristine lakes, and charming villages. Enjoy world-class skiing, hiking, and chocolate!</p>
+                <p>From Zurich to Interlaken, Switzerland offers stunning natural beauty and precision. Perfect for nature lovers and adventure enthusiasts.</p>
+                <button class="select-destination-btn" onclick="selectDestination('switzerland')">Select Switzerland</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Page 3: Price Calculator -->
+    <div id="page3" class="page">
+        <div class="calculator-container">
+            <div class="calculator-header">
+                <h1>🎯 Build Your Perfect Trip</h1>
+                <p>Customize your adventure and watch the price update in real-time</p>
+            </div>
+
+            <div class="destination-info" id="destinationInfo">
+                <h2 id="destName">Choose Your Destination</h2>
+                <p id="destDescription">Select a destination from Page 2 to start planning your adventure!</p>
+            </div>
+
+            <div class="price-section">
+                <h3>✈️ Flight Options</h3>
+                <p class="section-note">⚠️ Select only ONE flight option</p>
+                <div class="option-item" data-group="flight">
+                    <input type="radio" name="flight" data-price="41500" id="economy">
+                    <div class="option-details">
+                        <div class="option-name">Economy Flight</div>
+                        <div class="option-description">Comfortable and affordable</div>
+                    </div>
+                    <div class="option-price">₹41,500</div>
+                </div>
+                <div class="option-item" data-group="flight">
+                    <input type="radio" name="flight" data-price="99600" id="business">
+                    <div class="option-details">
+                        <div class="option-name">Business Class</div>
+                        <div class="option-description">Extra comfort and priority boarding</div>
+                    </div>
+                    <div class="option-price">₹99,600</div>
+                </div>
+                <div class="option-item" data-group="flight">
+                    <input type="radio" name="flight" data-price="249000" id="firstclass">
+                    <div class="option-details">
+                        <div class="option-name">First Class Experience</div>
+                        <div class="option-description">Ultimate luxury and personalized service</div>
+                    </div>
+                    <div class="option-price">₹2,49,000</div>
+                </div>
+                <div class="option-item" data-group="flight">
+                    <input type="radio" name="flight" data-price="664000" id="private-jet">
+                    <div class="option-details">
+                        <div class="option-name">Private Jet Charter</div>
+                        <div class="option-description">Exclusive travel on your schedule</div>
+                    </div>
+                    <div class="option-price">₹6,64,000</div>
+                </div>
+            </div>
+
+            <div class="price-section">
+                <h3>🏨 Accommodation</h3>
+                <p class="section-note">⚠️ Select only ONE accommodation option</p>
+                <div class="option-item" data-group="accommodation">
+                    <input type="radio" name="accommodation" data-price="12450" id="hostel">
+                    <div class="option-details">
+                        <div class="option-name">Budget Hostel (per night)</div>
+                        <div class="option-description">Clean and social atmosphere</div>
+                    </div>
+                    <div class="option-price">₹12,450</div>
+                </div>
+                <div class="option-item" data-group="accommodation">
+                    <input type="radio" name="accommodation" data-price="33200" id="hotel">
+                    <div class="option-details">
+                        <div class="option-name">4-Star Hotel (per night)</div>
+                        <div class="option-description">Great amenities and location</div>
+                    </div>
+                    <div class="option-price">₹33,200</div>
+                </div>
+                <div class="option-item" data-group="accommodation">
+                    <input type="radio" name="accommodation" data-price="83000" id="luxury">
+                    <div class="option-details">
+                        <div class="option-name">Luxury Resort (per night)</div>
+                        <div class="option-description">Premium service and facilities</div>
+                    </div>
+                    <div class="option-price">₹83,000</div>
+                </div>
+                <div class="option-item" data-group="accommodation">
+                    <input type="radio" name="accommodation" data-price="24900" id="airbnb">
+                    <div class="option-details">
+                        <div class="option-name">Private Airbnb (per night)</div>
+                        <div class="option-description">Home away from home</div>
+                    </div>
+                    <div class="option-price">₹24,900</div>
+                </div>
+                <div class="option-item" data-group="accommodation">
+                    <input type="radio" name="accommodation" data-price="207500" id="villa">
+                    <div class="option-details">
+                        <div class="option-name">Private Villa (per night)</div>
+                        <div class="option-description">Exclusive property with pool</div>
+                    </div>
+                    <div class="option-price">₹2,07,500</div>
+                </div>
+            </div>
+
+            <div class="price-section">
+                <h3>🍽️ Food Packages</h3>
+                <p class="section-note">⚠️ Select only ONE food package</p>
+                <div class="option-item" data-group="food">
+                    <input type="radio" name="food" data-price="16600" id="street">
+                    <div class="option-details">
+                        <div class="option-name">Local Street Food Tour</div>
+                        <div class="option-description">Authentic local flavors</div>
+                    </div>
+                    <div class="option-price">₹16,600</div>
+                </div>
+                <div class="option-item" data-group="food">
+                    <input type="radio" name="food" data-price="41500" id="dining">
+                    <div class="option-details">
+                        <div class="option-name">Fine Dining Package</div>
+                        <div class="option-description">Upscale restaurant experiences</div>
+                    </div>
+                    <div class="option-price">₹41,500</div>
+                </div>
+                <div class="option-item" data-group="food">
+                    <input type="radio" name="food" data-price="66400" id="michelin">
+                    <div class="option-details">
+                        <div class="option-name">Michelin Star Experience</div>
+                        <div class="option-description">World-class culinary journey</div>
+                    </div>
+                    <div class="option-price">₹66,400</div>
+                </div>
+                <div class="option-item" data-group="food">
+                    <input type="radio" name="food" data-price="29050" id="cooking">
+                    <div class="option-details">
+                        <div class="option-name">Cooking Class Package</div>
+                        <div class="option-description">Learn local cuisine secrets</div>
+                    </div>
+                    <div class="option-price">₹29,050</div>
+                </div>
+            </div>
+
+            <div class="price-section">
+                <h3>🎭 Activities & Tours</h3>
+                <p class="section-note">✅ Select MULTIPLE activities</p>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="8300" id="citytour">
+                    <div class="option-details">
+                        <div class="option-name">Guided City Tour</div>
+                        <div class="option-description">Explore major attractions with expert guide</div>
+                    </div>
+                    <div class="option-price">₹8,300</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="20750" id="adventure">
+                    <div class="option-details">
+                        <div class="option-name">Adventure Activities</div>
+                        <div class="option-description">Hiking, zip-lining, and more</div>
+                    </div>
+                    <div class="option-price">₹20,750</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="14940" id="cultural">
+                    <div class="option-details">
+                        <div class="option-name">Cultural Experience Package</div>
+                        <div class="option-description">Museums and historical sites</div>
+                    </div>
+                    <div class="option-price">₹14,940</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="33200" id="private">
+                    <div class="option-details">
+                        <div class="option-name">Private Tour Guide</div>
+                        <div class="option-description">Personalized full-day experience</div>
+                    </div>
+                    <div class="option-price">₹33,200</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="24900" id="photography">
+                    <div class="option-details">
+                        <div class="option-name">Photography Tour</div>
+                        <div class="option-description">Capture stunning memories</div>
+                    </div>
+                    <div class="option-price">₹24,900</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="41500" id="helicopter">
+                    <div class="option-details">
+                        <div class="option-name">Helicopter City Tour</div>
+                        <div class="option-description">Bird's eye view experience</div>
+                    </div>
+                    <div class="option-price">₹41,500</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="16600" id="spa">
+                    <div class="option-details">
+                        <div class="option-name">Spa & Wellness Package</div>
+                        <div class="option-description">Relaxation and rejuvenation</div>
+                    </div>
+                    <div class="option-price">₹16,600</div>
+                </div>
+                <div class="option-item" data-group="activities">
+                    <input type="checkbox" data-price="12450" id="wine">
+                    <div class="option-details">
+                        <div class="option-name">Wine Tasting Tour</div>
+                        <div class="option-description">Sample regional wines</div>
+                    </div>
+                    <div class="option-price">₹12,450</div>
+                </div>
+            </div>
+
+            <div class="total-display">
+                <h2>Total Trip Cost</h2>
+                <div class="total-amount">₹<span id="totalAmount">0</span></div>
+            </div>
+
+            <button class="confirm-btn" onclick="confirmBooking()">Confirm Your Adventure</button>
+        </div>
+    </div>
+
+    <!-- Page 4: Confirmation -->
+    <div id="page4" class="page">
+        <div class="confirmation-container">
+            <div class="confirmation-icon">🎉</div>
+            <h1>Thank You!</h1>
+            <p>Your journey simulation is complete. We hope you enjoyed exploring the world with VoyageFlow!</p>
+            <p>Start planning your next adventure with us!</p>
+            
+            <div class="social-links">
+                <a href="#" class="social-link" title="Facebook">f</a>
+                <a href="#" class="social-link" title="Twitter">𝕏</a>
+                <a href="#" class="social-link" title="Instagram">📷</a>
+                <a href="#" class="social-link" title="YouTube">▶</a>
+            </div>
+
+            <button class="restart-btn" onclick="restartJourney()">Plan Another Trip</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2>✅ Registration Successful!</h2>
+            <p>Welcome aboard! Let's explore amazing destinations together.</p>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2>🎊 Booking Confirmed!</h2>
+            <p>Your trip itinerary has been saved. Get ready for an amazing adventure!</p>
+        </div>
+    </div>
+
+    <script>
+        // Destination Information
+        const destinations = {
+            paris: {
+                name: '🗼 Paris, France',
+                description: 'The City of Light beckons with its iconic Eiffel Tower, world-class museums, and charming cafés. Experience the romance, art, and culture of one of the world\'s most beautiful cities.'
+            },
+            tokyo: {
+                name: '🗾 Tokyo, Japan',
+                description: 'Experience the perfect harmony of ancient traditions and cutting-edge technology. From serene temples to bustling markets, Tokyo offers an unforgettable blend of old and new.'
+            },
+            rome: {
+                name: '🏛️ Rome, Italy',
+                description: 'Walk through millennia of history in the Eternal City. Marvel at ancient ruins, stunning architecture, and enjoy world-renowned Italian cuisine in this timeless destination.'
+            },
+            bali: {
+                name: '🌴 Bali, Indonesia',
+                description: 'Discover paradise on the Island of Gods. With pristine beaches, lush rice terraces, and rich spiritual traditions, Bali is the perfect tropical escape.'
+            },
+            santorini: {
+                name: '🌅 Santorini, Greece',
+                description: 'Experience breathtaking sunsets over the Aegean Sea from iconic white-washed buildings. This volcanic island paradise offers stunning views and Mediterranean charm.'
+            },
+            dubai: {
+                name: '🏙️ Dubai, UAE',
+                description: 'Experience luxury and innovation in this desert oasis. From the world\'s tallest building to traditional souks, Dubai offers a unique blend of tradition and futurism.'
+            },
+            maldives: {
+                name: '🏝️ Maldives',
+                description: 'Escape to paradise with crystal-clear turquoise waters, pristine white sand beaches, and world-class diving. Perfect for honeymooners and anyone seeking ultimate tropical retreat.'
+            },
+            newyork: {
+                name: '🗽 New York, USA',
+                description: 'The city that never sleeps! Experience Times Square, Central Park, Broadway shows, and diverse cuisine. Perfect for culture lovers and urban explorers.'
+            },
+            switzerland: {
+                name: '🏔️ Switzerland',
+                description: 'Discover the Swiss Alps with breathtaking mountain scenery, pristine lakes, and charming villages. Perfect for nature lovers and adventure enthusiasts.'
+            }
+        };
+
+        let selectedDestination = null;
+
+        // Page Navigation
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Select Destination Function
+        function selectDestination(dest) {
+            selectedDestination = dest;
+            const destInfo = destinations[dest];
+            
+            document.getElementById('destName').textContent = destInfo.name;
+            document.getElementById('destDescription').textContent = destInfo.description;
+            
+            navigateTo('page3');
+        }
+
+        // Form Validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            }
+
+            const phone = document.getElementById('phone').value.trim();
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.add('show');
+                isValid = false;
+            }
+
+            const pincode = document.getElementById('pincode').value.trim();
+            const pincodeRegex = /^\d{6}$/;
+            if (!pincodeRegex.test(pincode)) {
+                document.getElementById('pincodeError').classList.add('show');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const modal = document.getElementById('successModal');
+                modal.classList.add('show');
+                
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    navigateTo('page2');
+                }, 2000);
+            }
+        });
+
+        // Smooth scroll for blog sections
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const content = entry.target.querySelector('.blog-content');
+                    if (content) {
+                        content.classList.add('visible');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.blog-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Floating Button Scroll Effect
+        const floatingBtn = document.getElementById('floatingPlanBtn');
+
+        window.addEventListener('scroll', function() {
+            if (document.getElementById('page2').classList.contains('active')) {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > 300) {
+                    floatingBtn.classList.add('shrink');
+                } else {
+                    floatingBtn.classList.remove('shrink');
+                }
+
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercentage = scrollTop / maxScroll;
+                const maxTop = window.innerHeight - 100;
+                const newTop = 100 + (scrollPercentage * (maxTop - 100));
+                
+                floatingBtn.style.top = newTop + 'px';
+            }
+        });
+
+        // Price Calculator with Radio/Checkbox Logic
+        let totalPrice = 0;
+
+        function updateTotal() {
+            totalPrice = 0;
+            
+            // Calculate from radio buttons (single selection)
+            document.querySelectorAll('#page3 input[type="radio"]:checked').forEach(radio => {
+                totalPrice += parseInt(radio.dataset.price);
+            });
+            
+            // Calculate from checkboxes (multiple selection)
+            document.querySelectorAll('#page3 input[type="checkbox"]:checked').forEach(checkbox => {
+                totalPrice += parseInt(checkbox.dataset.price);
+            });
+
+            const totalElement = document.getElementById('totalAmount');
+            const currentTotal = parseInt(totalElement.textContent.replace(/,/g, '')) || 0;
+            
+            animateValue(totalElement, currentTotal, totalPrice, 500);
+        }
+
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = end.toLocaleString('en-IN');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current).toLocaleString('en-IN');
+                }
+            }, 16);
+        }
+
+        // Handle option item clicks with visual feedback
+        document.querySelectorAll('.option-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const input = this.querySelector('input');
+                const group = this.dataset.group;
+                
+                if (input.type === 'radio') {
+                    // Remove selected class from all items in this group
+                    document.querySelectorAll(`.option-item[data-group="${group}"]`).forEach(i => {
+                        i.classList.remove('selected');
+                    });
+                    // Add selected class to clicked item
+                    this.classList.add('selected');
+                    input.checked = true;
+                } else {
+                    // Checkbox - toggle
+                    input.checked = !input.checked;
+                    this.classList.toggle('selected', input.checked);
+                }
+                
+                updateTotal();
+            });
+        });
+
+        // Prevent input click from double-toggling
+        document.querySelectorAll('.option-item input').forEach(input => {
+            input.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            input.addEventListener('change', updateTotal);
+        });
+
+        // Confirm Booking
+        function confirmBooking() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                navigateTo('page4');
+            }, 2500);
+        }
+
+        // Restart Journey - DON'T reset form, only reset selections
+        function restartJourney() {
+            // Reset radio buttons
+            document.querySelectorAll('#page3 input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Reset checkboxes
+            document.querySelectorAll('#page3 input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Remove selected styling
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Reset total
+            totalPrice = 0;
+            document.getElementById('totalAmount').textContent = '0';
+            
+            // Reset selected destination
+            selectedDestination = null;
+            document.getElementById('destName').textContent = 'Choose Your Destination';
+            document.getElementById('destDescription').textContent = 'Select a destination from Page 2 to start planning your adventure!';
+            
+            // Go back to page 2 (destinations)
+            navigateTo('page2');
+        }
+
+        // Real-time validation feedback
+        document.getElementById('phone').addEventListener('input', function(e) {
+            const value = e.target.value;
+            const phoneRegex = /^\d{10}$/;
+            
+            if (value && !phoneRegex.test(value)) {
+                e.target.style.borderColor = '#e74c3c';
+            } else if (value) {
+                e.target.style.borderColor = '#27ae60';
+            } else {
+                e.target.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        document.getElementById('pincode').addEventListener('input', function(e) {
+            const value = e.target.value;
+            const pincodeRegex = /^\d{6}$/;
+            
+            if (value && !pincodeRegex.test(value)) {
+                e.target.style.borderColor = '#e74c3c';
+            } else if (value) {
+                e.target.style.borderColor = '#27ae60';
+            } else {
+                e.target.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function(e) {
+            const value = e.target.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (value && !emailRegex.test(value)) {
+                e.target.style.borderColor = '#e74c3c';
+            } else if (value) {
+                e.target.style.borderColor = '#27ae60';
+            } else {
+                e.target.style.borderColor = '#e0e0e0';
+            }
+        });
+    </script>
+</body>
+</html>
