@@ -39,6 +39,7 @@ Open a terminal and navigate to the backend directory:
 
 ```bash
 cd backend
+```bash
 
 Create and activate a virtual environment:
 
